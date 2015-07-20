@@ -1,411 +1,324 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+    <title>Drone Wars</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
 
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/github.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
 
-	<body>
+  <body>
 
-		<div class="reveal">
+    <div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>The HTML Presentation Framework</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>Drone Wars</h1>
+          <h3>The 2014 @asyncjs Brighton Digital Festival Hackathon</h3>
+          <p>
+            <small><a href="http://hakim.se">Mark Everitt</a> / <a href="http://twitter.com/hakimel">@qubyte</a></small>
+          </p>
+          <aside class="notes">I'm Mark, and I'm going to talk about a hackathon I wrote and ran. I hope you enjoy it!</aside>
+        </section>
 
-				<section>
-					<h2>Hello There</h2>
-					<p>
-						reveal.js enables you to create beautiful interactive slide decks using HTML. This presentation will show you examples of what it can do.
-					</p>
-				</section>
+        <section>
+          <h2>A little about me</h2>
+          <div class="flex-container">
+            <img src="img/me.jpg" width="400" class="flex-element">
+            <ul class="flex-element" style="padding: 50px;"><li>'06 - '12:  Quantum Info</li><li>'12 - '15:  This!</li></ul>
+          </div>
+          <aside class="notes">First off, a little about me. I'm what is sometimes called a full-stack engineer. Really I'm just really enthusiastic about JS. I learnt JS in the context of Node.js, so I didn't have a lot of the more horrific DOM/browesr APIs there to give me a hard time. Later on I moved to about 50-50 frontend-backend and learnt me some nginx for reverse proxying. You might be wondering how I learnt JS from Node when Node is so relatively young. Well, that's because I'm also a doctor of quantum information, which was my previous career, and useful for raising eyebrows in presentations.</aside>
+        </section>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>Slides can be nested inside of each other.</p>
-						<p>Use the <em>Space</em> key to navigate through all slides.</p>
-						<br>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Nested slides are useful for adding additional detail underneath a high level horizontal slide.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>That's it, time to go back up.</p>
-						<br>
-						<a href="#/2">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="transform: rotate(180deg); -webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
+        <section>
+          <h2>The hackathon</h2>
+          <p>Part of the 2014 Brighton Digital Festival.</p>
+          <p>Hosted by @asyncjs, the Brighton JavaScript User Group</p>
+          <img src="img/tank.jpg" width="300" class="flex-element">
+          <aside class="notes">Each year the Brighton JavaScript user group holds an event for the Brighton Digital Festival in the autumn. In 2014 we decided it should be a hackathon, accessible to anyone. Developers (over the whole range of experience) and designers. The idea was to form small teams to make something that looks shiny and embodies extreme malevolence.</aside>
+        </section>
 
-				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? Not a problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slides.com" target="_blank">http://slides.com</a>.
-					</p>
-				</section>
+        <section>
+          <h2>The concept</h2>
+          <p>Inspired by an old project called robojs</p>
+          <img src="img/robojs.gif" width="500" class="flex-element">
+        </section>
 
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
+        <section>
+          <h2>The concept</h2>
+          <p>Procedural. A little dull, and not very realistic.</p>
+          <img src="img/floor-turtle.jpg" width="500" class="flex-element">
+        </section>
 
-				<section>
-					<h2>Touch Optimized</h2>
-					<p>
-						Presentations look great on touch devices, like mobile phones and tablets. Simply swipe through your slides.
-					</p>
-				</section>
+        <section>
+          <h2>The concept</h2>
+          <p>Wanted something more like this guy.</p>
+          <img src="img/arnie.gif" width="600" class="flex-element">
+        </section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
+        <section>
+          <h2>The concept</h2>
+          <pre><code data-trim>
+importScripts('base-robot.js');
 
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
+ScanBot = BaseRobot;
 
-						```
-						<section data-markdown>
-						  ## Markdown support
+ScanBot.run = function() {
+  this.shoot();
+  this.turn_turret_right(45);
 
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
+  this.move_forward(Math.random() * 400, {
+    DONE: () => {
+      this.shoot();
+      this.turn_right(Math.random() * 90, {
+        DONE: () => {
+          this.shoot();
+          this._run();
+        }
+      });
+    },
+    ENEMY_COLLIDE: () => {
+      this.shoot();
+      this.move_backward(100, {
+        DONE: () => {
+          this._run();
+        },
+        WALL_COLLIDE: () => {
+          this._run();
+        }
+      });
+    },
+    WALL_COLLIDE: () => {
+      this.turn_left(180, {
+        DONE: () => {
+          this.shoot();
+          this._run();
+        }
+      });
+    }
+  });
+}
+          </code></pre>
+        </section>
 
-				<section>
-					<section id="fragments">
-						<h2>Fragments</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
+        <section>
+          <h2>A Drone</h2>
+          <p>What would it be like for a physical drone in an arena?</p>
+          <ul>
+            <li>It can know about the locations and speeds of things around it...</li>
+            <li>It can accelerate in any direction...</li>
+            <li>It can shoot at a location...</li>
+            <li>It can know how fast projectiles move...</li>
+            <li>It can know how much damage it has taken</li>
+            <li><i>and nothing else!</i></li>
+          </ul>
+          <aside class="notes">If we were building an automatic robot for something like robot wars, what information would it have access to? As it turns out, not an awful lot. It can know where things around it are and how fast they are moving. It can accelerate, and it can shoot. That's really not all that much, but when you think about it, that's the sort of information anyone driving a tank would have. Using only this information, a tank has to choose its actions. That would be the primary challenge for attendees - to write code that would be sandboxed in a web worker, like a brain sandboxed in a skull driving a body.
+Web workers are separate threads, so they come with some added benefits... If you code something slow, then it's going to be slow to react to changing conditions. It also avoids all the robots thinking from impacting the render loop.
+A drone consists of two parts. The body is spawned by the battlefield, and contains all the state of a drone. This code is the same for all combatants. Each drone will spawn its custom brain and load its own graphical assets. The brain can ask the body what is going on in and around itself, and the body can tell these things to the brain. The brain has no control over the state of the body beyond accelerating it in some direction.
+          </aside>
+        </section>
 
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's different types of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-					</section>
-				</section>
+        <section>
+          <h2>cortex</h2>
+          <p>Script to run in worker for convenience functions:</p>
+          <ul>
+            <li>cortex.log</li>
+            <li>cortex.init</li>
+            <li>contex.Queue</li>
+          </ul>
+        </section>
 
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=slide#/transitions">Slide</a> -
-						<a href="?transition=convex#/transitions">Convex</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a>
-					</p>
-				</section>
+        <section>
+          <h2>cortex.init</h2>
+          <code><pre>
+cortex.init(function decider(data, callback) {
+  // Decide what to do based on data;
+  // Pass an error to the callback to log an issue with the decider.
 
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
+  callback(null, decision);
+});
+          </code></pre>
+        </section>
 
-				<section>
-					<section data-background="#dddddd">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Tiled Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-							<h2>Video Backgrounds</h2>
-							<pre><code style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
-						</div>
-					</section>
-					<section data-background="http://i.giphy.com/90F8aUepslB84.gif">
-						<h2>... and GIFs!</h2>
-					</section>
-				</section>
+        <section>
+          <h2>Turret example</h2>
+          <code><pre>
+importScripts('/scripts/brains/cortex.js');
 
-				<section data-transition="slide" data-background="#4d7e65" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						Different background transitions are available via the backgroundTransition option. This one's called "zoom".
-					</p>
-					<pre><code>Reveal.configure({ backgroundTransition: 'zoom' })</code></pre>
-				</section>
+cortex.init(function decider(data, callback) {
+  let {robot, token, status: {robots}} = data;
+  let enemyIds = Object.keys(robots).filter(id => id !== robot.id);
 
-				<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
-					<h2>Background Transitions</h2>
-					<p>
-						You can override background transitions per-slide.
-					</p>
-					<pre><code style="word-wrap: break-word;">&lt;section data-background-transition="zoom"&gt;</code></pre>
-				</section>
+  callback(null, {
+    token,
+    acceleration: {x: 0, y: 0},
+    fire: robots[enemyIds[0]].position
+  });
+});
+          </pre></code>
+        </section>
 
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+        <section data-state="turret-example">
+          <h2>Turret example</h2>
+          <canvas style="border: 1px solid black;" width="600" height="600" id="turret-example-canvas"></canvas>
+        </section>
 
-    var nodes = document.querySelectorAll( selector );
+        <section>
+          <h2>The Battlefield</h2>
+          <p>This is the code running in the main thread.</p>
+          <p>Contains robots and projectiles.</p>
+          <p>Generative landscape (wanted to do more on this but ran out of time).</p>
+          <aside class="notes">What I call the battlefield is the code that runs in the main JS thread. It's renders a canvas containing the visual battlefield and the drone bodies. It spawns robots and projectiles. Essentially it handles the state and rendering of the battle, and that's about it.</aside>
+        </section>
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+        <section>
+          <h2>The server</h2>
+          <aside class="notes">The server runs on node (of course). It compiles the browser code using browserify with a few extra tricks I threw in. It needed to be runnable from the attendees machines for development purposes, so I made sure the only thing needed was Node. Since some of the attendees would be bringing windows machines, I could not rely on binary modules, so pure JS only..</aside>
+        </section>
 
-      if( !node.className ) {
-        node.className += ' roll';
-      }
+        <section>
+          <h2>The Event</h2>
+          <aside class="notes">The event itself was held over two evening, with each session around 2.5 hours. Beer and pizzas were provided by the sponsor, and that ensured a healthy turnout. We learnt a few things. Firstly, don't rely on a network to be sane. It turned out we couldn't host a service locally, so we had to quickly spin up a digital ocean droplet to do this for us. </aside>
+        </section>
+
+        <section>
+          <h2>Thoughts</h2>
+        </section>
+
+        <section>
+          <h2>If we have time...</h2>
+          <code><pre>
+let MyClass = () => {
+  let privateData = new WeakMap();
+
+  function privateMethod(instance) {
+      let privateData = privateData.get(instance);
+
+      // Do something with private data;
+  }
+
+  return class MyClass {
+    constructor() {
+      privateData.set(this, {});
+    }
+
+    someMethod() {
+      let private = privateData.get(this);
+
+      // Do something with private data;
+    }
+
+    someOtherMethod() {
+        return privateMethod(this);
     }
   }
-}
-					</code></pre>
-					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+}();
+          </pre></code>
+        </section>
 
-				<section>
-					<h2>Marvelous List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
+      </div>
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+    </div>
 
-				<section>
-					<h2>Tabular Tables</h2>
-					<table>
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Value</th>
-								<th>Quantity</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Apples</td>
-								<td>$1</td>
-								<td>7</td>
-							</tr>
-							<tr>
-								<td>Lemonade</td>
-								<td>$2</td>
-								<td>18</td>
-							</tr>
-							<tr>
-								<td>Bread</td>
-								<td>$3</td>
-								<td>2</td>
-							</tr>
-						</tbody>
-					</table>
-				</section>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="lib/robots/scripts/bundle.js"></script>
 
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
+    <script>
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: false,
+        progress: true,
+        history: true,
+        center: true,
 
-				<section>
-					<h2>Speaker View</h2>
-					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-					<p>Press the <em>S</em> key to try it out.</p>
+        transition: 'none', // none/fade/slide/convex/concave/zoom
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true }
+        ]
+      });
 
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-					<iframe src="//www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-				</section>
+    </script>
 
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the page background.
-					</p>
-				</section>
+    <script>
+      var canvas = document.getElementById('turret-example-canvas');
 
-				<section data-state="customevent">
-					<h2>State Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code class="javascript" data-trim contenteditable style="font-size: 18px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+      var turretDef = {
+        position: {
+          x: Math.round(canvas.width / 2),
+          y: Math.round(canvas.height / 2)
+        },
+        velocity: {
+          x: 0,
+          y: 0
+        },
+        name: 'shooter',
+        src: 'lib/robots/scripts/brains/example_01_shooter.js',
+        body: 'lib/robots/img/body2.png',
+        turret: 'lib/robots/img/turret2.png'
+      };
 
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-					</p>
-				</section>
+      var orbiterDef = {
+        position: {
+          x: Math.round(canvas.width / 2),
+          y: Math.round(canvas.height / 2) - 150
+        },
+        velocity: {
+          x: 0.1,
+          y: 0
+        },
+        maxAcceleration: 0.00005,
+        name: 'orbiter',
+        src: 'lib/robots/scripts/brains/example_01_orbiter.js',
+        body: 'lib/robots/img/body3.png',
+        turret: 'lib/robots/img/turret3.png'
+      };
 
-				<section>
-					<h2>Much more</h2>
-					<ul>
-						<li>Right-to-left support</li>
-						<li><a href="https://github.com/hakimel/reveal.js#api">Extensive JavaScript API</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#auto-sliding">Auto-progression</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#parallax-background">Parallax backgrounds</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js#keyboard-bindings">Custom keyboard bindings</a></li>
-					</ul>
-				</section>
+      Reveal.addEventListener('turret-example', function() {
+        var battlefield = examples[0](canvas, turretDef, orbiterDef);
 
-				<section style="text-align: left;">
-					<h1>THE END</h1>
-					<p>
-						- <a href="http://slides.com">Try the online editor</a> <br>
-						- <a href="https://github.com/hakimel/reveal.js">Source code &amp; documentation</a>
-					</p>
-				</section>
-
-			</div>
-
-		</div>
-
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
-
-		<script>
-
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
-
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
-
-		</script>
-
-	</body>
+        window.addEventListener('hashchange', function() {
+          //battlefield.stop();
+        }, false);
+      }, false );
+    </script>
+  </body>
 </html>
