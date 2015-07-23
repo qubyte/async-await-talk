@@ -45,7 +45,7 @@
           <h1>Drone Wars</h1>
           <h3>The 2014 @asyncjs Brighton Digital Festival Hackathon</h3>
           <p>
-            <small><a href="http://hakim.se">Mark Everitt</a> / <a href="http://twitter.com/hakimel">@qubyte</a></small>
+            <small>Mark Everitt / <a href="http://twitter.com/qubyte">@qubyte</a></small>
           </p>
           <aside class="notes">I'm Mark, and I'm going to talk about a hackathon I wrote and ran. I hope you enjoy it!</aside>
         </section>
@@ -54,9 +54,19 @@
           <h2>A little about me</h2>
           <div class="flex-container">
             <img src="img/me.jpg" width="400" class="flex-element">
-            <ul class="flex-element" style="padding: 50px;"><li>'06 - '12:  Quantum Info</li><li>'12 - '15:  This!</li></ul>
+            <ul class="flex-element" style="padding: 50px;"><li>'05 - '12:  Quantum Info</li><li>'12 - '15:  This!</li></ul>
           </div>
-          <aside class="notes">First off, a little about me. I'm what is sometimes called a full-stack engineer. Really I'm just really enthusiastic about JS. I learnt JS in the context of Node.js, so I didn't have a lot of the more horrific DOM/browesr APIs there to give me a hard time. Later on I moved to about 50-50 frontend-backend and learnt me some nginx for reverse proxying. You might be wondering how I learnt JS from Node when Node is so relatively young. Well, that's because I'm also a doctor of quantum information, which was my previous career, and useful for raising eyebrows in presentations.</aside>
+          <aside class="notes">First off, a little about me. I'm a full-stack engineer. Really I'm just very enthusiastic about JS. I in context of Node, so I didn't have horrific DOM/browesr APIs there to give me a hard time. Later on I moved to about 50-50 frontend-backend and learnt some nginx for reverse proxying. You might be wondering how I learnt JS from Node when Node is so relatively young. Well, that's because I'm also a doctor of quantum information, which was my previous career, and useful for raising eyebrows in presentations.</aside>
+        </section>
+
+        <section>
+          <h2>Ideas</h2>
+          <ul>
+            <li>The web is not (quite) ready for server sent events.</li>
+            <li>Testable CJS modules: The FS is you friend.</li>
+            <li>ES6 gives you (nearly) everything you need for classy object orientation.</li>
+          </ul>
+          <aside class="notes">I had a few ideas for things to talk about today. The first there is on server sent events, which I personally love. There are issues to do with max TCP connections and antivirus software that might be dry and take longer than 20 minutes to cover though. The second idea is on a pattern I use for module private API which is still trivial to unit test. Again, a bit dry. The third is on a pattern I've found useful lately, but it too short to stretch out to 20 minutes. If any of those topics interest you I'm happy to discuss them after though.</aside>
         </section>
 
         <section>
@@ -71,18 +81,7 @@
           <h2>The concept</h2>
           <p>Inspired by an old project called robojs</p>
           <img src="img/robojs.gif" width="500" class="flex-element">
-        </section>
-
-        <section>
-          <h2>The concept</h2>
-          <p>Procedural. A little dull, and not very realistic.</p>
-          <img src="img/floor-turtle.jpg" width="500" class="flex-element">
-        </section>
-
-        <section>
-          <h2>The concept</h2>
-          <p>Wanted something more like this guy.</p>
-          <img src="img/arnie.gif" width="600" class="flex-element">
+          <aside class="notes">Robot wars idea. Autonomous. RoboJS.</aside>
         </section>
 
         <section>
@@ -92,7 +91,7 @@ importScripts('base-robot.js');
 
 ScanBot = BaseRobot;
 
-ScanBot.run = function() {
+ScanBot.run = function () {
   this.shoot();
   this.turn_turret_right(45);
 
@@ -128,6 +127,21 @@ ScanBot.run = function() {
   });
 }
           </code></pre>
+          <aside class="notes">Here's a sample of robot code. Embeded in a web worker...</aside>
+        </section>
+
+        <section>
+          <h2>The concept</h2>
+          <p>Procedural. A little dull, and not very realistic.</p>
+          <img src="img/floor-turtle.jpg" width="500" class="flex-element">
+          <aside class="notes">It reminded me of using this thing in school (logo, floor turtle). Only has a chance to do something else if interrupted or action complete.</aside>
+        </section>
+
+        <section>
+          <h2>The concept</h2>
+          <p>Wanted something more like this guy.</p>
+          <img src="img/arnie.gif" width="600" class="flex-element">
+          <aside class="notes">I wanted something more physically realistic, with more fluid, constant intelligence.</aside>
         </section>
 
         <section>
@@ -138,8 +152,8 @@ ScanBot.run = function() {
             <li>It can accelerate in any direction...</li>
             <li>It can shoot at a location...</li>
             <li>It can know how fast projectiles move...</li>
-            <li>It can know how much damage it has taken</li>
-            <li><i>and nothing else!</i></li>
+            <li>It can know how much damage it has taken...</li>
+            <li><i>And nothing else!</i></li>
           </ul>
           <aside class="notes">If we were building an automatic robot for something like robot wars, what information would it have access to? As it turns out, not an awful lot. It can know where things around it are and how fast they are moving. It can accelerate, and it can shoot. That's really not all that much, but when you think about it, that's the sort of information anyone driving a tank would have. Using only this information, a tank has to choose its actions. That would be the primary challenge for attendees - to write code that would be sandboxed in a web worker, like a brain sandboxed in a skull driving a body.
 Web workers are separate threads, so they come with some added benefits... If you code something slow, then it's going to be slow to react to changing conditions. It also avoids all the robots thinking from impacting the render loop.
@@ -148,21 +162,47 @@ A drone consists of two parts. The body is spawned by the battlefield, and conta
         </section>
 
         <section>
+          <h2>Web workers</h2>
+          <pre><code>
+var myWorker = new Worker('path/to/myWorker.js');
+
+myWorker.postMessage('hello worker');
+
+myWorker.onmessage = function (e) {
+  console.log(e.data);
+};
+
+myWorker.terminate(); // kill the worker
+          </code></pre>
+          <pre><code>
+importScripts('path/to/some/library.js');
+
+onmessage = function (e) {
+  // e.data contains the message from main
+};
+
+close(); // shut myself down
+          </code></pre>
+        </section>
+
+        <section>
           <h2>cortex</h2>
           <p>Script to run in worker for convenience functions:</p>
           <ul>
             <li>cortex.log</li>
             <li>cortex.init</li>
-            <li>contex.Queue</li>
+            <li>cortex.Queue</li>
           </ul>
+          <aside class="notes">I decided to keep web workers as robot brains.</aside>
         </section>
 
         <section>
           <h2>cortex.init</h2>
-          <code><pre>
+          <pre><code>
 cortex.init(function decider(data, callback) {
-  // Decide what to do based on data;
+  // Decide what to do based on data.
   // Pass an error to the callback to log an issue with the decider.
+  // Pass a decision to the callback to instruct the robot body.
 
   callback(null, decision);
 });
@@ -171,20 +211,23 @@ cortex.init(function decider(data, callback) {
 
         <section>
           <h2>Turret example</h2>
-          <code><pre>
+          <pre><code>
 importScripts('/scripts/brains/cortex.js');
 
-cortex.init(function decider(data, callback) {
-  let {robot, token, status: {robots}} = data;
-  let enemyIds = Object.keys(robots).filter(id => id !== robot.id);
+cortex.init(function (data, callback) {
+  var robot = data.robot;
+  var robots = data.status.robots;
+  var enemyIds = Object.keys(robots).filter(function (id) {
+      return id !== robot.id
+  });
 
   callback(null, {
-    token,
+    token: data.token,
     acceleration: {x: 0, y: 0},
     fire: robots[enemyIds[0]].position
   });
 });
-          </pre></code>
+          </code></pre>
         </section>
 
         <section data-state="turret-example">
@@ -194,24 +237,66 @@ cortex.init(function decider(data, callback) {
 
         <section>
           <h2>The Battlefield</h2>
-          <p>This is the code running in the main thread.</p>
-          <p>Contains robots and projectiles.</p>
-          <p>Generative landscape (wanted to do more on this but ran out of time).</p>
+          <ul>
+            <li>This is the code running in the main thread.</li>
+            <li>Contains robots projectiles and explosions.</li>
+            <li>Generative landscape (wanted to do more on this but ran out of time).</li>
+            <li>Impassable terrain (turned off).</li>
+          </ul>
           <aside class="notes">What I call the battlefield is the code that runs in the main JS thread. It's renders a canvas containing the visual battlefield and the drone bodies. It spawns robots and projectiles. Essentially it handles the state and rendering of the battle, and that's about it.</aside>
         </section>
 
         <section>
+          <pre style="font-family: 'Anonymous Pro' monospace; box-shadow: 0 0 0 0;">
+              Main Thread                        Web Workers
++-------------------------------------------+
+|                 Battlefield               |
+| +---------+   +----------+  +----------+  |     +-------+
+| |Explosion|   |Projectile|  |          |<-------|       |
+| +---------+   +----------+  |  Robot   |  |     | Brain |
+|                             |          +------->|       |
+| +---------+   +----------+  +----------+  |     +-------+
+| |Explosion|   |Projectile|                |
+| +---------+   +----------+  +----------+  |     +-------+
+|                             |          |<-------|       |
+| +---------+   +----------+  |  Robot   |  |     | Brain |
+| |Explosion|   |Projectile|  |          +------->|       |
+| +---------+   +----------+  +----------+  |     +-------+
+|                                           |
+| +---------+   +----------+  +----------+  |     +-------+
+| |Explosion|   |Projectile|  |          |<-------|       |
+| +---------+   +----------+  |  Robot   |  |     | Brain |
+|         +-------+           |          +------->|       |
+|         |Terrain|           +----------+  |     +-------+
+|         +-------+                         |
++-------------------------------------------+
+          </pre>
+        </section>
+
+        <section data-state="battlefield-example">
+          <h2>Battlefield example</h2>
+          <canvas style="border: 1px solid black;" width="600" height="600" id="battlefield-canvas"></canvas>
+        </section>
+
+        <section>
           <h2>The server</h2>
+          <ul>
+            <li>Tiny express server.</li>
+            <li>Provides an uploader for code and images.</li>
+            <li>Uses browserify for browser code. Updates on change.</li>
+          </ul>
           <aside class="notes">The server runs on node (of course). It compiles the browser code using browserify with a few extra tricks I threw in. It needed to be runnable from the attendees machines for development purposes, so I made sure the only thing needed was Node. Since some of the attendees would be bringing windows machines, I could not rely on binary modules, so pure JS only..</aside>
         </section>
 
         <section>
           <h2>The Event</h2>
-          <aside class="notes">The event itself was held over two evening, with each session around 2.5 hours. Beer and pizzas were provided by the sponsor, and that ensured a healthy turnout. We learnt a few things. Firstly, don't rely on a network to be sane. It turned out we couldn't host a service locally, so we had to quickly spin up a digital ocean droplet to do this for us. </aside>
+          <img src="img/battle.jpg" height="500px"></img>
+          <aside class="notes">The event itself was held over two evenings, with each session around 2 hours. Beer and pizzas were provided by the sponsor, and that ensured a healthy turnout.</aside>
         </section>
 
         <section>
           <h2>Thoughts</h2>
+          <aside class="notes">Network not sane. Had to spin up external server. 2x2 hours too short for serious AI. Funny holes found. Multiple uploads and too large images.</aside>
         </section>
 
         <section>
@@ -314,6 +399,60 @@ let MyClass = () => {
 
       Reveal.addEventListener('turret-example', function() {
         var battlefield = examples[0](canvas, turretDef, orbiterDef);
+
+        window.addEventListener('hashchange', function() {
+          //battlefield.stop();
+        }, false);
+      }, false );
+    </script>
+
+    <script>
+      var canvas = document.getElementById('battlefield-canvas');
+
+      var robotDefs = []
+
+      function getRandomStartingPosition(canvas) {
+        return {
+          x: (canvas.width - 100) * Math.random() + 50,
+          y: (canvas.height - 100) * Math.random() + 50
+        };
+      }
+
+      // Sampler avoiders.
+      for (var i = 0; i < 2; i++) {
+        robotDefs.push({
+          position: getRandomStartingPosition(canvas),
+          name: 'avoider-' + (i + 1),
+          src: 'lib/robots/scripts/brains/avoider.js',
+          body: 'lib/robots/img/body' + (i + 2) + '.png',
+          turret: 'lib/robots/img/turret' + (i + 2) + '.png'
+        });
+      }
+
+      // Sample aggressors.
+      for (var j = 0; j < 2; j++) {
+        robotDefs.push({
+          position: getRandomStartingPosition(canvas),
+          name: 'agressor-' + (j + 1),
+          src: 'lib/robots/scripts/brains/aggressor.js',
+          body: 'lib/robots/img/body' + (i + 4) + '.png',
+          turret: 'lib/robots/img/turret' + (i + 4) + '.png'
+        });
+      }
+
+      // Sample Wanderers.
+      for (var k = 0; k < 2; k++) {
+        robotDefs.push({
+          position: getRandomStartingPosition(canvas),
+          name: 'wanderer-' + (k + 1),
+          src: 'lib/robots/scripts/brains/wanderer.js',
+          body: 'lib/robots/img/body' + (i + 1) + '.png',
+          turret: 'lib/robots/img/turret' + (i + 6) + '.png'
+        });
+      }
+
+      Reveal.addEventListener('battlefield-example', function() {
+        var battlefield = examples[1](canvas, robotDefs);
 
         window.addEventListener('hashchange', function() {
           //battlefield.stop();
