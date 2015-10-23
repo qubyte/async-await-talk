@@ -3,14 +3,7 @@
 
   <head>
     <meta charset="utf-8">
-
-    <title>Drone Wars</title>
-
-    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-    <meta name="author" content="Hakim El Hattab">
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>async-await</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
@@ -42,12 +35,12 @@
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
         <section>
-          <h1>Drone Wars</h1>
-          <h3>The 2014 @asyncjs Brighton Digital Festival Hackathon</h3>
+          <h1>async-await</h1>
+          <h3>@asyncjs Dec 2015</h3>
           <p>
             <small>Mark Everitt / <a href="http://twitter.com/qubyte">@qubyte</a></small>
           </p>
-          <aside class="notes">I'm Mark, and I'm going to talk about a hackathon I wrote and ran. I hope you enjoy it!</aside>
+          <aside class="notes">I'm Mark, and I'm going to talk about async-await, and why it's going to rock your world.</aside>
         </section>
 
         <section>
@@ -56,406 +49,146 @@
             <img src="img/me.jpg" width="400" class="flex-element">
             <ul class="flex-element" style="padding: 50px;"><li>'05 - '12:  Quantum Info</li><li>'12 - '15:  This!</li></ul>
           </div>
-          <aside class="notes">First off, a little about me. I'm a full-stack engineer. Really I'm just very enthusiastic about JS. I in context of Node, so I didn't have horrific DOM/browesr APIs there to give me a hard time. Later on I moved to about 50-50 frontend-backend and learnt some nginx for reverse proxying. You might be wondering how I learnt JS from Node when Node is so relatively young. Well, that's because I'm also a doctor of quantum information, which was my previous career, and useful for raising eyebrows in presentations.</aside>
+          <aside class="notes">First off, a little about me. I'm a JavaScript developer for brandwatch working with 50:50 Node and frontend. Ive been working for brandwatch for about a year and a half, and in the industry since 2012.</aside>
         </section>
 
         <section>
-          <h2>Ideas</h2>
+          <h2>Promises</h2>
+          <aside class="notes">If you know me, then you know I have a dislike of promises. Mainly that's down to how they've been mis-sold.</aside>
+        </section>
+
+        <section>
+          <h2>Promises are good because...</h2>
           <ul>
-            <li>The web is not (quite) ready for server sent events.</li>
-            <li>Testable CJS modules: The FS is you friend.</li>
-            <li>ES6 gives you (nearly) everything you need for classy object orientation.</li>
+            <li>They can be chained.</li>
+            <li>They cache a result.</li>
           </ul>
-          <aside class="notes">I had a few ideas for things to talk about today. The first there is on server sent events, which I personally love. There are issues to do with max TCP connections and antivirus software that might be dry and take longer than 20 minutes to cover though. The second idea is on a pattern I use for module private API which is still trivial to unit test. Again, a bit dry. The third is on a pattern I've found useful lately, but it too short to stretch out to 20 minutes. If any of those topics interest you I'm happy to discuss them after though.</aside>
         </section>
 
         <section>
-          <h2>The hackathon</h2>
-          <p>Part of the 2014 Brighton Digital Festival.</p>
-          <p>Hosted by @asyncjs, the Brighton JavaScript User Group</p>
-          <img src="img/tank.jpg" width="300" class="flex-element">
-          <aside class="notes">Each year the Brighton JavaScript user group holds an event for the Brighton Digital Festival in the autumn. In 2014 we decided it should be a hackathon, accessible to anyone. Developers (over the whole range of experience) and designers. The idea was to form small teams to make something that looks shiny and embodies extreme malevolence.</aside>
+          <h2>Promises are bad because...</h2>
+          <ul>
+            <li>They are waterfalls.</li>
+            <li>They swallow errors.</li>
+            <li>Difficult to escape chain without abusing throw or rejecting.</li>
+            <li>DO NOT save you from callback hell.</li>
+          </ul>
         </section>
 
         <section>
-          <h2>The concept</h2>
-          <p>Inspired by an old project called robojs</p>
-          <img src="img/robojs.gif" width="500" class="flex-element">
-          <aside class="notes">Robot wars idea. Autonomous. RoboJS.</aside>
-        </section>
-
-        <section>
-          <h2>The concept</h2>
+          <h2>Promise waterfalls</h2>
           <pre><code data-trim>
-importScripts('base-robot.js');
+function returnsPromiseA() {
+  // blah
+  return 'resolutionA';
+}
 
-ScanBot = BaseRobot;
+function returnsPromiseB(resolutionA) {
+  // blah that needs resolutionA
+  return 'resolutionB';
+}
 
-ScanBot.run = function () {
-  this.shoot();
-  this.turn_turret_right(45);
+function returnsPromiseC(resolutionB) {
+  // blah that needs resolutionB
+  return 'resolutionC';
+}
 
-  this.move_forward(Math.random() * 400, {
-    DONE: () => {
-      this.shoot();
-      this.turn_right(Math.random() * 90, {
-        DONE: () => {
-          this.shoot();
-          this._run();
-        }
-      });
-    },
-    ENEMY_COLLIDE: () => {
-      this.shoot();
-      this.move_backward(100, {
-        DONE: () => {
-          this._run();
-        },
-        WALL_COLLIDE: () => {
-          this._run();
-        }
-      });
-    },
-    WALL_COLLIDE: () => {
-      this.turn_left(180, {
-        DONE: () => {
-          this.shoot();
-          this._run();
-        }
-      });
-    }
-  });
+returnsPromiseA
+  .then(returnsPromiseB)
+  .then(returnsPromiseC);
+          </code></pre>
+          <aside class="notes">This is a pretty standard looking promise chain. The problem is, each depends on the resolution of the previous step. This makes it non-trivial to add or remove steps.</aside>
+        </section>
+
+        <section>
+          <h2>Fixing a Promise waterfall</h2>
+          <pre><code data-trim>
+function returnsPromiseA(context) {
+  // blah
+  context.set('resolutionA', 'a');
+  resolve(context);
+}
+
+function returnsPromiseB(context) {
+  const resolutionA = context.get('resolutionA');
+  // blah
+  context.set('resolutionB', 'b');
+  resolve(context);
+}
+
+// ...
+
+const promise = returnsPromiseA(new Map())
+  .then(returnsPromiseB)
+  .then(returnsPromiseC);
+          </code></pre>
+          <aside class="notes">A possible solution is to receive and return a context, so all promises do the same thing and steps can be added arbitrarily.</aside>
+        </section>
+
+        <section>
+          <h2>Flow control</h2>
+          <pre><code data-trim>
+// parallel
+function makeParallelRequests(urls) {
+    const requests = urls.map(url => fetch(url));
+    const responsesPromise = Promise.all(requests);
+
+    // Resolves to an array of responses (in same order).
+    return responsesPromise;
 }
           </code></pre>
-          <aside class="notes">Here's a sample of robot code. Embeded in a web worker...</aside>
         </section>
 
         <section>
-          <h2>The concept</h2>
-          <p>Procedural. A little dull, and not very realistic.</p>
-          <img src="img/floor-turtle.jpg" width="500" class="flex-element">
-          <aside class="notes">It reminded me of using this thing in school (logo, floor turtle). Only has a chance to do something else if interrupted or action complete.</aside>
-        </section>
+          <h2>Flow control</h2>
+          <pre><code data-trim>
+// series
+function makeSeriesRequests(urls) {
+    const responses = [];
 
-        <section>
-          <h2>The concept</h2>
-          <p>Wanted something more like this guy.</p>
-          <img src="img/arnie.gif" width="600" class="flex-element">
-          <aside class="notes">I wanted something more physically realistic, with more fluid, constant intelligence.</aside>
-        </section>
+    function runner(index) {
+        const url = urls[index];
 
-        <section>
-          <h2>A Drone</h2>
-          <p>What would it be like for a physical drone in an arena?</p>
-          <ul>
-            <li>It can know about the locations and speeds of things around it...</li>
-            <li>It can accelerate in any direction...</li>
-            <li>It can shoot at a location...</li>
-            <li>It can know how fast projectiles move...</li>
-            <li>It can know how much damage it has taken...</li>
-            <li><i>And nothing else!</i></li>
-          </ul>
-          <aside class="notes">If we were building an automatic robot for something like robot wars, what information would it have access to? As it turns out, not an awful lot. It can know where things around it are and how fast they are moving. It can accelerate, and it can shoot. That's really not all that much, but when you think about it, that's the sort of information anyone driving a tank would have. Using only this information, a tank has to choose its actions. That would be the primary challenge for attendees - to write code that would be sandboxed in a web worker, like a brain sandboxed in a skull driving a body.
-Web workers are separate threads, so they come with some added benefits... If you code something slow, then it's going to be slow to react to changing conditions. It also avoids all the robots thinking from impacting the render loop.
-A drone consists of two parts. The body is spawned by the battlefield, and contains all the state of a drone. This code is the same for all combatants. Each drone will spawn its custom brain and load its own graphical assets. The brain can ask the body what is going on in and around itself, and the body can tell these things to the brain. The brain has no control over the state of the body beyond accelerating it in some direction.
-          </aside>
-        </section>
+        if (!url) {
+            return;
+        }
 
-        <section>
-          <h2>Web workers</h2>
-          <pre><code>
-var myWorker = new Worker('path/to/myWorker.js');
-
-myWorker.postMessage('hello worker');
-
-myWorker.onmessage = function (e) {
-  console.log(e.data);
-};
-
-myWorker.terminate(); // kill the worker
-          </code></pre>
-          <pre><code>
-importScripts('path/to/some/library.js');
-
-onmessage = function (e) {
-  // e.data contains the message from main
-};
-
-postMessage(workerResult); // send message to master
-
-close(); // shut myself down
-          </code></pre>
-        </section>
-
-        <section>
-          <h2>cortex</h2>
-          <p>Script to run in worker for convenience functions:</p>
-          <ul>
-            <li>cortex.log</li>
-            <li>cortex.init</li>
-            <li>cortex.Queue</li>
-          </ul>
-          <aside class="notes">I decided to keep web workers as robot brains.</aside>
-        </section>
-
-        <section>
-          <h2>cortex.init</h2>
-          <pre><code>
-cortex.init(function decider(data, callback) {
-  // Decide what to do based on data.
-  // Pass an error to the callback to log an issue with the decider.
-  // Pass a decision to the callback to instruct the robot body.
-
-  callback(null, decision);
-});
-          </code></pre>
-        </section>
-
-        <section>
-          <h2>Turret example</h2>
-          <pre><code>
-importScripts('/scripts/brains/cortex.js');
-
-cortex.init(function (data, callback) {
-  var robot = data.robot;
-  var robots = data.status.robots;
-  var enemyIds = Object.keys(robots).filter(function (id) {
-      return id !== robot.id
-  });
-
-  callback(null, {
-    token: data.token,
-    acceleration: {x: 0, y: 0},
-    fire: robots[enemyIds[0]].position
-  });
-});
-          </code></pre>
-        </section>
-
-        <section data-state="turret-example">
-          <h2>Turret example</h2>
-          <canvas style="border: 1px solid black;" width="600" height="600" id="turret-example-canvas"></canvas>
-        </section>
-
-        <section>
-          <h2>The Battlefield</h2>
-          <ul>
-            <li>This is the code running in the main thread.</li>
-            <li>Contains robots projectiles and explosions.</li>
-            <li>Generative landscape (wanted to do more on this but ran out of time).</li>
-            <li>Impassable terrain (turned off).</li>
-          </ul>
-          <aside class="notes">What I call the battlefield is the code that runs in the main JS thread. It's renders a canvas containing the visual battlefield and the drone bodies. It spawns robots and projectiles. Essentially it handles the state and rendering of the battle, and that's about it.</aside>
-        </section>
-
-        <section>
-          <pre style="font-family: 'Anonymous Pro' monospace; box-shadow: 0 0 0 0;">
-              Main Thread                        Web Workers
-+-------------------------------------------+
-|                 Battlefield               |
-| +---------+   +----------+  +----------+  |     +-------+
-| |Explosion|   |Projectile|  |          |<-------|       |
-| +---------+   +----------+  |  Robot   |  |     | Brain |
-|                             |          +------->|       |
-| +---------+   +----------+  +----------+  |     +-------+
-| |Explosion|   |Projectile|                |
-| +---------+   +----------+  +----------+  |     +-------+
-|                             |          |<-------|       |
-| +---------+   +----------+  |  Robot   |  |     | Brain |
-| |Explosion|   |Projectile|  |          +------->|       |
-| +---------+   +----------+  +----------+  |     +-------+
-|                                           |
-| +---------+   +----------+  +----------+  |     +-------+
-| |Explosion|   |Projectile|  |          |<-------|       |
-| +---------+   +----------+  |  Robot   |  |     | Brain |
-|         +-------+           |          +------->|       |
-|         |Terrain|           +----------+  |     +-------+
-|         +-------+                         |
-+-------------------------------------------+
-          </pre>
-        </section>
-
-        <section data-state="battlefield-example">
-          <h2>Battlefield example</h2>
-          <canvas style="border: 1px solid black;" width="600" height="600" id="battlefield-canvas"></canvas>
-        </section>
-
-        <section>
-          <h2>The server</h2>
-          <ul>
-            <li>Tiny express server.</li>
-            <li>Provides an uploader for code and images.</li>
-            <li>Uses browserify for browser code. Updates on change.</li>
-          </ul>
-          <aside class="notes">The server runs on node (of course). It compiles the browser code using browserify with a few extra tricks I threw in. It needed to be runnable from the attendees machines for development purposes, so I made sure the only thing needed was Node. Since some of the attendees would be bringing windows machines, I could not rely on binary modules, so pure JS only..</aside>
-        </section>
-
-        <section>
-          <h2>The Event</h2>
-          <img src="img/battle.jpg" height="500px"></img>
-          <aside class="notes">The event itself was held over two evenings, with each session around 2 hours. Beer and pizzas were provided by the sponsor, and that ensured a healthy turnout.</aside>
-        </section>
-
-        <section>
-          <h2>Thoughts</h2>
-          <aside class="notes">Network not sane. Had to spin up external server. 2x2 hours too short for serious AI. Funny holes found. Multiple uploads and too large images.</aside>
-        </section>
-
-        <section>
-          <h2>Thanks!</h2>
-        </section>
-
-        <section>
-          <h2>If we have time...</h2>
-          <pre><code>
-let MyClass = () => {
-  let privateData = new WeakMap();
-
-  function privateMethod(instance) {
-      let privateData = privateData.get(instance);
-      // Do something with private data;
-  }
-
-  return class MyClass {
-    constructor() {
-      privateData.set(this, {});
+        return fetch(url)
+            .then(response => responses.push(response))
+            .then(() => runner(index + 1));
     }
-    someMethod() {
-      let private = privateData.get(this);
-      // Do something with private data;
-    }
-    someOtherMethod() {
-      return privateMethod(this);
-    }
-  }
-}();
+
+    return runner(0).then(() => responses);
+}
+
+// WAT
           </code></pre>
         </section>
 
+        <section>
+          <h2>Generators</h2>
+          <aside class="notes">So that's promises. Interesting, but not a complete solution.</aside>
+        </section>
+
+        <section>
+          <h2>Generators</h2>
+          <pre><code data-trim>
+function* count() {
+    let i = 0;
+
+    while (true) {
+        yield i;
+        i += 1;
+    }
+}
+
+const c = count();
+
+c.next() // {value: 0, done: false}
+c.next() // {value: 1, done: false}
+          </code></pre>
+        </section>
       </div>
-
     </div>
-
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.js"></script>
-    <script src="lib/robots/scripts/bundle.js"></script>
-
-    <script>
-
-      // Full list of configuration options available at:
-      // https://github.com/hakimel/reveal.js#configuration
-      Reveal.initialize({
-        controls: false,
-        progress: true,
-        history: true,
-        center: true,
-        margin: 0.05,
-
-        transition: 'none', // none/fade/slide/convex/concave/zoom
-
-        // Optional reveal.js plugins
-        dependencies: [
-          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/zoom-js/zoom.js', async: true },
-          { src: 'plugin/notes/notes.js', async: true }
-        ]
-      });
-
-    </script>
-
-    <script>
-      Reveal.addEventListener('turret-example', function() {
-        var canvas = document.getElementById('turret-example-canvas');
-
-        var turretDef = {
-          position: {
-            x: Math.round(canvas.width / 2),
-            y: Math.round(canvas.height / 2)
-          },
-          velocity: {
-            x: 0,
-            y: 0
-          },
-          name: 'shooter',
-          src: 'lib/robots/scripts/brains/example_01_shooter.js',
-          body: 'lib/robots/img/body2.png',
-          turret: 'lib/robots/img/turret2.png'
-        };
-
-        var orbiterDef = {
-          position: {
-            x: Math.round(canvas.width / 2),
-            y: Math.round(canvas.height / 2) - 150
-          },
-          velocity: {
-            x: 0.1,
-            y: 0
-          },
-          maxAcceleration: 0.00005,
-          name: 'orbiter',
-          src: 'lib/robots/scripts/brains/example_01_orbiter.js',
-          body: 'lib/robots/img/body3.png',
-          turret: 'lib/robots/img/turret3.png'
-        };
-
-        var battlefield = examples[0](canvas, turretDef, orbiterDef);
-      }, false );
-    </script>
-
-    <script>
-      Reveal.addEventListener('battlefield-example', function() {
-        var canvas = document.getElementById('battlefield-canvas');
-
-        var robotDefs = []
-
-        function getRandomStartingPosition(canvas) {
-          return {
-            x: (canvas.width - 100) * Math.random() + 50,
-            y: (canvas.height - 100) * Math.random() + 50
-          };
-        }
-
-          // Sampler avoiders.
-        for (var i = 0; i < 2; i++) {
-          robotDefs.push({
-            position: getRandomStartingPosition(canvas),
-            name: 'avoider-' + (i + 1),
-            src: 'lib/robots/scripts/brains/avoider.js',
-            body: 'lib/robots/img/body' + (i + 2) + '.png',
-            turret: 'lib/robots/img/turret' + (i + 2) + '.png'
-          });
-        }
-
-        // Sample aggressors.
-        for (var j = 0; j < 2; j++) {
-          robotDefs.push({
-            position: getRandomStartingPosition(canvas),
-            name: 'agressor-' + (j + 1),
-            src: 'lib/robots/scripts/brains/aggressor.js',
-            body: 'lib/robots/img/body' + (i + 4) + '.png',
-            turret: 'lib/robots/img/turret' + (i + 4) + '.png'
-          });
-        }
-
-        // Sample Wanderers.
-        for (var k = 0; k < 2; k++) {
-          robotDefs.push({
-            position: getRandomStartingPosition(canvas),
-            name: 'wanderer-' + (k + 1),
-            src: 'lib/robots/scripts/brains/wanderer.js',
-            body: 'lib/robots/img/body' + (i + 1) + '.png',
-            turret: 'lib/robots/img/turret' + (i + 6) + '.png'
-          });
-        }
-        var battlefield = examples[1](canvas, robotDefs);
-
-        window.addEventListener('hashchange', function() {
-          //battlefield.stop();
-        }, false);
-      }, false );
-    </script>
   </body>
 </html>
